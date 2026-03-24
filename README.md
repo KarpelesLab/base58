@@ -1,4 +1,5 @@
 [![GoDoc](https://godoc.org/github.com/KarpelesLab/base58?status.svg)](https://godoc.org/github.com/KarpelesLab/base58)
+[![Coverage Status](https://coveralls.io/repos/github/KarpelesLab/base58/badge.svg?branch=master)](https://coveralls.io/github/KarpelesLab/base58?branch=master)
 
 Modified implementation based on `github.com/mr-tron/base58` itself based on https://github.com/trezor/trezor-crypto/blob/master/base58.c
 
