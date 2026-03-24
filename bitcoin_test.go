@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ModChain/base58"
+	"github.com/KarpelesLab/base58"
 )
 
 func TestNewEncodingNonASCII(t *testing.T) {

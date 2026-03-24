@@ -1,3 +1,3 @@
-module github.com/ModChain/base58
+module github.com/KarpelesLab/base58
 
 go 1.21.3

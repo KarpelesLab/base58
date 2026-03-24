@@ -1,4 +1,4 @@
-[![GoDoc](https://godoc.org/github.com/ModChain/base58?status.svg)](https://godoc.org/github.com/ModChain/base58)
+[![GoDoc](https://godoc.org/github.com/KarpelesLab/base58?status.svg)](https://godoc.org/github.com/KarpelesLab/base58)
 
 Modified implementation based on `github.com/mr-tron/base58` itself based on https://github.com/trezor/trezor-crypto/blob/master/base58.c
 
