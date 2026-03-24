@@ -7,4 +7,5 @@ var (
 	ErrNonAscii           = errors.New("base58: cannot decode non-ASCII input")
 	ErrBadDigit           = errors.New("base58: cannot decode unsupported digit")
 	ErrInvalidBlockLength = errors.New("base58: invalid block length")
+	ErrOverflow           = errors.New("base58: decoded value overflows block size")
 )

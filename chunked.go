@@ -78,6 +78,9 @@ func (e *Encoding) decodeBlock(block string) ([]byte, error) {
 
 	// Determine how many raw bytes we should get
 	rawSize := decodedBlockSizes[size]
+	if rawSize < 0 {
+		return nil, ErrInvalidBlockLength
+	}
 
 	// Convert base58 string -> number
 	var resNum uint64
@@ -88,8 +91,17 @@ func (e *Encoding) decodeBlock(block string) ([]byte, error) {
 		if e.decode[r] == -1 {
 			return nil, fmt.Errorf("%w (%q)", ErrBadDigit, r)
 		}
-		idx := e.decode[r]
-		resNum = (resNum * 58) + uint64(idx)
+		idx := uint64(e.decode[r])
+		// Check for uint64 overflow before the operation
+		if resNum > (^uint64(0)-idx)/58 {
+			return nil, ErrOverflow
+		}
+		resNum = (resNum * 58) + idx
+	}
+
+	// Check that the decoded value fits in rawSize bytes
+	if rawSize < 8 && resNum >= (1<<uint(rawSize*8)) {
+		return nil, ErrOverflow
 	}
 
 	// Output array

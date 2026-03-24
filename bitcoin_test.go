@@ -9,6 +9,48 @@ import (
 	"github.com/ModChain/base58"
 )
 
+func TestNewEncodingNonASCII(t *testing.T) {
+	defer func() {
+		r := recover()
+		if r == nil {
+			t.Fatal("NewEncoding with non-ASCII: expected panic, got none")
+		}
+		msg, ok := r.(string)
+		if !ok || !strings.Contains(msg, "non-ASCII") {
+			t.Fatalf("NewEncoding with non-ASCII: expected descriptive panic, got: %v", r)
+		}
+	}()
+	// Replace first char with a non-ASCII byte (0x80)
+	base58.NewEncoding("\x80" + "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")
+}
+
+func TestDecodeEmptyString(t *testing.T) {
+	_, err := base58.Bitcoin.Decode("")
+	if err == nil {
+		t.Error("Decode empty string: expected error, got nil")
+	}
+}
+
+func TestDecodeInvalidCharacter(t *testing.T) {
+	_, err := base58.Bitcoin.Decode("0OIl") // characters not in bitcoin alphabet
+	if err == nil {
+		t.Error("Decode invalid characters: expected error, got nil")
+	}
+}
+
+func TestEncodeDecodeLeadingZeros(t *testing.T) {
+	// Encoding with leading zero bytes should preserve them
+	input := []byte{0, 0, 0, 1, 2, 3}
+	encoded := base58.Bitcoin.Encode(input)
+	decoded, err := base58.Bitcoin.Decode(encoded)
+	if err != nil {
+		t.Fatalf("unexpected error: %s", err)
+	}
+	if !bytes.Equal(input, decoded) {
+		t.Errorf("leading zeros not preserved: got %x, want %x", decoded, input)
+	}
+}
+
 func TestBase58Vectors(t *testing.T) {
 	vecs := []string{
 		"1QCaxc8hutpdZ62iKZsn1TCG3nh7uPZojq:00fe7bd0e0032b8d2c1156841fa0601456aaac8f3c0ef16d8c",

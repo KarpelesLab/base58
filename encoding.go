@@ -24,6 +24,9 @@ func NewEncoding(s string) *Encoding {
 		ret.decode[i] = -1
 	}
 	for i, b := range ret.encode {
+		if b >= 128 {
+			panic("base58 encoding contains non-ASCII character")
+		}
 		if ret.decode[b] != -1 {
 			panic("base58 encoding has duplicated symbol")
 		}
